@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <title>AMR</title>
+  <style>
+    body {
+      font-family: Arial;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    td {
+      padding: 10px;
+      border: 1px solid #000;
+    }
+
+    .outpa {
+      margin-top: 20px;
+      padding: 10px;
+    }
+
+    #notf {
+      color: red;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <table>
+    <tr>
+      <td colspan="2">
+        <textarea id="textar" rows="4" cols="50" placeholder="Copy and paste a text here.."></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <h3>Styling a paragraph</h3>
+        <label for="textColor">Text color:</label>
+        <input type="color" id="textColor">
+        <br>
+        <label for="bgColor">Background color:</label>
+        <input type="color" id="bgColor">
+        <br>
+        <input type="radio" id="withoutBorder" name="border" value="without" checked>
+        <label for="withoutBorder">Without border</label>
+        <br>
+        <input type="radio" id="withBorder" name="border" value="with">
+        <label for="withBorder">With border</label>
+        <br>
+        <label for="borderStyle">Border style:</label>
+        <select id="borderStyle" disabled>
+          <option value="solid">Solid</option>
+          <option value="dashed">Dashed</option>
+          <option value="dotted">Dotted</option>
+        </select>
+        <br>
+        <label for="borderColor">Border color:</label>
+        <input type="color" id="borderColor" disabled>
+        <br>
+        <button onclick="createStyledParagraph()">Create the styled paragraph</button>
+      </td>
+      <td>
+        <h3>Searching for a text</h3>
+        <label for="searchWord">Search for a word:</label>
+        <input type="text" id="searchWord">
+        <button onclick="searchText()">Search</button>
+        <button onclick="clearSearch()">Clear Search</button>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" id="outputCell">
+        <p id="styp">Here you should display the text in a paragraph with the above specified properties</p>
+        <p id="notf">The word does not exist.</p>
+      </td>
+    </tr>
+  </table>
+
+  <script>
+    document.getElementById('withoutBorder').addEventListener('change', function () {
+      document.getElementById('borderStyle').disabled = true;
+      document.getElementById('borderColor').disabled = true;
+    });
+
+    document.getElementById('withBorder').addEventListener('change', function () {
+      document.getElementById('borderStyle').disabled = false;
+      document.getElementById('borderColor').disabled = false;
+    });
+
+    function createStyledParagraph() {
+      const text = document.getElementById('textar').value;
+      const textColor = document.getElementById('textColor').value;
+      const bgColor = document.getElementById('bgColor').value;
+      const withBorder = document.getElementById('withBorder').checked;
+      const borderStyle = document.getElementById('borderStyle').value;
+      const borderColor = document.getElementById('borderColor').value;
+
+      const paragraph = document.getElementById('styp');
+      paragraph.textContent = text;
+      paragraph.style.color = textColor;
+      paragraph.style.backgroundColor = bgColor;
+
+      if (withBorder) {
+        paragraph.style.border = `2px ${borderStyle} ${borderColor}`;
+      } else {
+        paragraph.style.border = 'none';
+      }
+
+      document.getElementById('notf').style.display = 'none';
+    }
+
+    function searchText() {
+      const searchWord = document.getElementById('searchWord').value;
+      const paragraph = document.getElementById('styp');
+      const text = paragraph.innerHTML;
+
+      const regex = new RegExp(`(${searchWord})`, 'gi');
+      const highlightedText = text.replace(regex, '<mark>$1</mark>');
+      paragraph.innerHTML = highlightedText;
+
+      const notf = document.getElementById('notf');
+      if (!regex.test(text)) {
+        notf.style.display = 'block';
+      } else {
+        notf.style.display = 'none';
+      }
+    }
+
+    function clearSearch() {
+      const paragraph = document.getElementById('styp');
+      paragraph.innerHTML = paragraph.textContent;
+      document.getElementById('notf').style.display = 'none';
+    }
+  </script>
+</body>
+
+</html>

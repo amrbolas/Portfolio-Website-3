@@ -1,0 +1,17 @@
+body {
+    font-family: Verdana;
+    background-color: #000000;
+
+}
+
+h1 {
+    color: #ffffff;
+    font-size: 300%;
+}
+
+p {
+    font-size: 150%;
+    color: #ffffff;
+    background-color: #0000004f;
+    text-align: center;
+}
